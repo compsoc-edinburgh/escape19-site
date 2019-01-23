@@ -1,6 +1,8 @@
 # SIGINT Escape Room 2018
 
-This is the ticketing system for a SIGINT event.
+This is the website for [SIGINT's Escape Room](https://escape.sigint.mx).
+
+## Event details
 
 - **Title**: Escape Room with SIGINT
 - **Location**: Locked in Edinburgh (1 Summerhall Place)
@@ -11,3 +13,11 @@ This is the ticketing system for a SIGINT event.
 - **Organiser**: SIGINT
 - **Cost**: £5 payable to COMPSOC
 - **Limit**: limit of 23 tickets
+
+## How to test
+
+The quickest and easiest way to test, if you have Docker installed, is to run the following command (make sure your current directory is this repository):
+
+```
+docker run --volume=$(pwd):/src:Z --publish 4000:4000 grahamc/jekyll serve --watch -H 0.0.0.0
+```
