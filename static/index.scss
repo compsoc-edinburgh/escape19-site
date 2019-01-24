@@ -33,3 +33,62 @@ html, body {
     max-width: 500px;
     padding-bottom: 2em;
 }
+
+.payment-wrapper .container {
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    border-radius: 4px;
+    padding: 3px;
+}
+.payment-wrapper fieldset {
+    border-style: none;
+    padding: 5px;
+    margin-left: -5px;
+    margin-right: -5px;
+    background: rgba(18, 91, 152, 0.05);
+    border-radius: 8px;
+}
+.payment-wrapper fieldset legend {
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 13px;
+    color: #8898aa;
+    padding: 3px 10px 7px;
+}
+.payment-wrapper fieldset legend + * {
+    clear: both;
+}
+.payment-wrapper input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    border-style: none;
+    /* color: #fff; */
+}
+.payment-wrapper input:-webkit-autofill {
+    transition: background-color 100000000s;
+    -webkit-animation: 1ms void-animation-out;
+}
+.payment-wrapper #payment-card {
+    padding: 10px;
+}
+.payment-wrapper input {
+    -webkit-animation: 1ms void-animation-out;
+}
+.payment-wrapper input::-webkit-input-placeholder {
+    color: #9bacc8;
+}
+.payment-wrapper input::-moz-placeholder {
+    color: #9bacc8;
+}
+.payment-wrapper input:-ms-input-placeholder {
+    color: #9bacc8;
+}
+#success-icon .border {
+    stroke: #ffc7ee;
+}
+#success-icon .checkmark {
+    stroke: #d782d9;
+}
