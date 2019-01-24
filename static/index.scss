@@ -4,3 +4,22 @@
 
 @import "reset";
 @import "typography";
+
+#cover {
+    background-color: rgb(6,6,6);
+
+    #cover-img {
+        background-image: url('{{site.baseurl}}/static/cover.png');
+        background-size: cover;
+        box-shadow: 0 0 15px 15px rgb(6,6,6) inset;
+        img {
+            visibility: hidden;
+        }
+    }
+}
+
+#lower {
+    box-shadow: 0 -5px 3px rgba(0, 0, 0, 0.3);
+    background-color: #181818;
+    padding-top: 20px;
+}
