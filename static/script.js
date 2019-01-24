@@ -123,38 +123,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 'Content-Type': 'application/json'
             },
             dataType: 'json'
-        }).then(
-            // Fulfillment
-            data => {
-                console.log("success", data);
-
-                document.getElementById("infball-ticket-button").setAttribute("href", "{{ site.baseurl }}/infball-ticket?id=" + data.data);
-
-                loadingModal.classList.add("d-none");
-                loadingModal.classList.remove("d-flex");
-
-                modal.modal("show");
-
-                completeResult(result, "success")
-            },
-
-            // Rejection
-            (resp, textStatus, errorThrown) => {
-                console.log("ENDPOINT_CHARGE error", resp, textStatus, errorThrown);
+        }).then(resp => {
+            if (!resp.ok) {
+                console.log("ENDPOINT_CHARGE error", resp);
                 enableInputs();
 
                 loadingModal.classList.add("d-none");
                 loadingModal.classList.remove("d-flex");
 
-                if (resp.responseJSON) {
-                    showError(resp.responseJSON.message, true);
-                } else {
+                resp.json().then(json => {
+                    console.log(json);
+                    showError(json.message, true);
+                }).catch(() => {
                     showError("Unknown error / network error. Your card has not been charged.", true);
-                }
-
-                completeResult(result, "fail");
+                }).finally(() => {
+                    completeResult(result, "fail");
+                });
+                return;
             }
-        );
+
+            return resp.json();
+        }).then(json => {
+            if (!json) {
+                return;
+            }
+
+            console.log("success", json);
+
+            document.getElementById("infball-ticket-button").setAttribute("href", "{{ site.baseurl }}/infball-ticket?id=" + json.data);
+
+            loadingModal.classList.add("d-none");
+            loadingModal.classList.remove("d-flex");
+
+            $(modal).modal("show");
+
+            completeResult(result, "success")
+        });
     }
 
     /**

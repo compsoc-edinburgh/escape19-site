@@ -1,2 +1,2 @@
-api_endpoint: http://api.escape.sigint.mx:8080
+api_endpoint: http://localhost:8080
 api_stripe_pk: pk_test_WLvFPL1mC9cr94Sjj6wxvBPN
