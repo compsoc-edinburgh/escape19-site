@@ -5,6 +5,10 @@
 @import "reset";
 @import "typography";
 
+html, body {
+    height: 100%;
+}
+
 #cover {
     background-color: rgb(6,6,6);
 
@@ -22,4 +26,9 @@
     box-shadow: 0 -5px 3px rgba(0, 0, 0, 0.3);
     background-color: #181818;
     padding-top: 20px;
+}
+
+.sigint-logo {
+    max-width: 500px;
+    padding-bottom: 2em;
 }
