@@ -1,8 +1,5 @@
 ---
 ---
-function isOver18() {
-    return document.getElementById("over18").checked;
-}
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -103,11 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
     function onTokenReceived(result) {
         const FullName = document.getElementById("fullname").value;
         const Email = document.getElementById("email").value;
-        const Over18 = isOver18();
 
         const data = {
             Token: result.token.id,
-            FullName, Email, Over18,
+            FullName, Email,
         }
 
         console.log("Submitting data", data);
@@ -194,8 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
             currency: "gbp",
             requestPayerName: true,
             total: {
-                amount: 4000,
-                label: "Informatics Ball 2018",
+                amount: 500,
+                label: "SIGINT Escape Room Ticket",
             }
         }
     );
