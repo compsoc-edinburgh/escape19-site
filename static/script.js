@@ -1,14 +1,15 @@
+---
+---
 function isOver18() {
-    return $("#over18").is(":checked");
+    return document.getElementById("over18").checked;
 }
 
-$(() => {
+document.addEventListener('DOMContentLoaded', () => {
 
-    var modal = $("#paymentModal");
-    const loadingModal = $("#processingModal");
-    var form = $("#payment-form");
-    var example = form;
-    var error = form.find('#card-input-error');
+    var modal = document.getElementById("paymentModal");
+    const loadingModal = document.getElementById("processingModal");
+    var form = document.getElementById("payment-form");
+    var error = document.getElementById('card-input-error');
 
     var stripe = Stripe('{{ site.data.settings.api_stripe_pk }}');
     var elements = stripe.elements({
@@ -20,17 +21,20 @@ $(() => {
     });
 
     function enableInputs() {
-        form.find(
+        const enables = form.querySelectorAll(
             "input, textarea, #payment-submit"
-        ).attr('disabled', false);
+        );
+        enables.forEach(e => e.removeAttribute('disabled'));
 
-        form.find(".alwaysDisabled").attr("disabled", true);
+        const disables = form.querySelectorAll(".alwaysDisabled");
+        disables.forEach(e => e.setAttribute("disabled", true));
     }
 
     function disableInputs() {
-        form.find(
+        const items = form.querySelectorAll(
             "input, textarea, #payment-submit"
-        ).attr('disabled', true);
+        );
+        items.forEach(e => e.setAttribute('disabled', true));
     }
 
     const ENDPOINT_BASE = '{{ site.data.settings.api_endpoint }}';
@@ -45,7 +49,7 @@ $(() => {
     //         contentType: 'application/json',
     //         dataType: 'json',
     //         error: function(resp, textStatus, errorThrown) {
-    //             $("#tickets-left").fadeOut();
+    //             document.getElementById("tickets-left").fadeOut();
     //         },
     //         success: function(data) {
     //             console.log("result", data);
@@ -55,16 +59,16 @@ $(() => {
     //                 text = data.Quantity + " ticket left!";
     //             } else if (data.Quantity === 0) {
     //                 text = "ALL SOLD OUT!";
-    //                 $("#payment-form").remove();
+    //                 document.getElementById("payment-form").remove();
     //                 clearInterval(checkTimeout);
     //             }
-    //             $("#tickets-counter").text(text);
+    //             document.getElementById("tickets-counter").text(text);
 
     //             if (data.Quantity <= 5) {
-    //                 $("#tickets-left").removeClass("alert-warning");
-    //                 $("#tickets-left").addClass("alert-danger");
+    //                 document.getElementById("tickets-left").classList.remove("alert-warning");
+    //                 document.getElementById("tickets-left").classList.add("alert-danger");
     //             }
-    //             $("#tickets-left").fadeIn();
+    //             document.getElementById("tickets-left").fadeIn();
     //         },
     //         timeout: 60000
     //     });
@@ -76,17 +80,17 @@ $(() => {
     function showError(text, forceEnabled) {
         // Hide error
         if (text == null) {
-            error.addClass('d-none');
+            error.classList.add('d-none');
             if (!forceEnabled) {
-                $("#payment-submit").attr("disabled", false);
+                document.getElementById("payment-submit").removeAttribute("disabled");
             }
             return;
         }
 
-        error.removeClass('d-none');
-        error.text(text);
+        error.classList.remove('d-none');
+        error.innerText = text;
         if (!forceEnabled) {
-            $("#payment-submit").attr("disabled", true);
+            document.getElementById("payment-submit").setAttribute("disabled", true);
         }
     }
 
@@ -97,27 +101,20 @@ $(() => {
     }
 
     function onTokenReceived(result) {
-        const FullName = $("#fullname").val();
-        const UUN = $("#uun").val();
-        const Email = $("#email").val();
+        const FullName = document.getElementById("fullname").value;
+        const Email = document.getElementById("email").value;
         const Over18 = isOver18();
-        const Starter = $("input[name='starterRadio']:checked").val();
-        const Main = $("input[name='mainRadio']:checked").val();
-        const Dessert = $("input[name='dessertRadio']:checked").val();
-        const SpecialReqs = $("#specialReqs").val();
-        const StaffCode = $("#staffCode").val();
 
         const data = {
             Token: result.token.id,
-            FullName, UUN, Email, Over18,
-            Starter, Main, Dessert,
-            StaffCode,
-            SpecialReqs,
+            FullName, Email, Over18,
         }
 
+        console.log("Submitting data", data);
+
         showError(null, true)
-        loadingModal.removeClass("d-none");
-        loadingModal.addClass("d-flex");
+        loadingModal.classList.remove("d-none");
+        loadingModal.classList.add("d-flex");
 
         $.ajax({
             url: ENDPOINT_CHARGE,
@@ -129,8 +126,8 @@ $(() => {
                 console.log("ENDPOINT_CHARGE error", resp, textStatus, errorThrown);
                 enableInputs();
 
-                loadingModal.addClass("d-none");
-                loadingModal.removeClass("d-flex");
+                loadingModal.classList.add("d-none");
+                loadingModal.classList.remove("d-flex");
 
                 if (resp.responseJSON) {
                     showError(resp.responseJSON.message, true);
@@ -143,10 +140,10 @@ $(() => {
             success: function(data) {
                 console.log("success", data);
 
-                $("#infball-ticket-button").attr("href", "{{ site.baseurl }}/infball-ticket?id=" + data.data);
+                document.getElementById("infball-ticket-button").attr("href", "{{ site.baseurl }}/infball-ticket?id=" + data.data);
 
-                loadingModal.addClass("d-none");
-                loadingModal.removeClass("d-flex");
+                loadingModal.classList.add("d-none");
+                loadingModal.classList.remove("d-flex");
 
                 modal.modal("show");
 
@@ -213,14 +210,14 @@ $(() => {
 
     paymentRequest.canMakePayment().then(result => {
         if (result) {
-            $(".card-only").addClass("d-none");
-            $(".payment-request-available").removeClass("d-none");
+            document.getElementsByClassName("card-only").classList.add("d-none");
+            document.getElementsByClassName("payment-request-available").classList.remove("d-none");
             paymentRequestElement.mount("#payment-request-button");
         }
     });
 
     // Listen on the form's 'submit' handler...
-    form.on('submit', e => {
+    form.onsubmit = e => {
         e.preventDefault();
 
         // Show a loading screen...
@@ -230,7 +227,7 @@ $(() => {
         disableInputs();
 
         // Gather additional customer data we have collected in our form.
-        var name = form.find('#cardholder-name').val();
+        var name = document.getElementById('cardholder-name').value;
         var additionalData = {
             name
         };
@@ -250,7 +247,7 @@ $(() => {
                 enableInputs();
             }
         });
-    });
+    };
 
     // Listen for errors from each Element, and show error messages in the UI.
     var savedErrors = {};
@@ -259,8 +256,8 @@ $(() => {
             if (event.error) {
                 savedErrors[idx] = event.error.message;
                 showError(event.error.message);
+                console.log("Error shown!")
             } else {
-                console.log("No new error!")
                 savedErrors[idx] = null;
 
                 // Loop over the saved errors and find the first one, if any.
@@ -275,12 +272,13 @@ $(() => {
                 if (nextError) {
                     // Now that they've fixed the current error, show another one.
                     showError(nextError);
+                    console.log("Show next error!")
                 } else {
+                    console.log("Last error fixed!")
                     // The user fixed the last error; no more errors.
                     showError(null);
                 }
             }
         });
     });
-})
-
+}, false);
