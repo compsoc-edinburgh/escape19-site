@@ -116,13 +116,30 @@ document.addEventListener('DOMContentLoaded', () => {
         loadingModal.classList.remove("d-none");
         loadingModal.classList.add("d-flex");
 
-        $.ajax({
-            url: ENDPOINT_CHARGE,
-            type: 'POST',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            dataType: 'json',
-            error: function(resp, textStatus, errorThrown) {
+        fetch(ENDPOINT_CHARGE, {
+            method: 'POST',
+            body: JSON.stringify(data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            dataType: 'json'
+        }).then(
+            // Fulfillment
+            data => {
+                console.log("success", data);
+
+                document.getElementById("infball-ticket-button").setAttribute("href", "{{ site.baseurl }}/infball-ticket?id=" + data.data);
+
+                loadingModal.classList.add("d-none");
+                loadingModal.classList.remove("d-flex");
+
+                modal.modal("show");
+
+                completeResult(result, "success")
+            },
+
+            // Rejection
+            (resp, textStatus, errorThrown) => {
                 console.log("ENDPOINT_CHARGE error", resp, textStatus, errorThrown);
                 enableInputs();
 
@@ -136,21 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 completeResult(result, "fail");
-            },
-            success: function(data) {
-                console.log("success", data);
-
-                document.getElementById("infball-ticket-button").attr("href", "{{ site.baseurl }}/infball-ticket?id=" + data.data);
-
-                loadingModal.classList.add("d-none");
-                loadingModal.classList.remove("d-flex");
-
-                modal.modal("show");
-
-                completeResult(result, "success")
-            },
-            timeout: 60000
-        });
+            }
+        );
     }
 
     /**
