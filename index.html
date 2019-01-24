@@ -37,11 +37,16 @@ layout: base
 	</div>
 </div>
 
-<div class="container">
-	<div class="row">
-		<!-- Create a button that your customers click to complete their purchase. -->
-		<button id="checkout-button">Pay</button>
-		<div id="error-message"></div>
+<div class="container pt-4">
+	<div class="row justify-content-center">
+		<div class="col-lg-8">
+			<form class="card">
+				<div class="card-header">Buy Ticket</div>
+				<div class="card-body">
+					{% include form.html %}
+				</div>
+			</form>
+		</div>
 	</div>
 </div>
 
