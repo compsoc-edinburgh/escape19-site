@@ -9,13 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var error = document.getElementById('card-input-error');
 
     var stripe = Stripe('{{ site.data.settings.api_stripe_pk }}');
-    var elements = stripe.elements({
-        fonts: [
-            {
-                cssSrc: "https://rsms.me/inter/inter-ui.css"
-            }
-        ]
-    });
+    var elements = stripe.elements();
 
     function enableInputs() {
         const enables = form.querySelectorAll(
