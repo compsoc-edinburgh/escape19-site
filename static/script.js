@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log("success", json);
 
-            document.getElementById("infball-ticket-button").setAttribute("href", "{{ site.baseurl }}/infball-ticket?id=" + json.data);
+            // document.getElementById("infball-ticket-button").setAttribute("href", "{{ site.baseurl }}/infball-ticket?id=" + json.data);
 
             loadingModal.classList.add("d-none");
             loadingModal.classList.remove("d-flex");
