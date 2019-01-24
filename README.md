@@ -1,4 +1,4 @@
-# SIGINT Escape Room 2018
+# SIGINT Escape Room 2019
 
 This is the website for [SIGINT's Escape Room](https://escape.sigint.mx).
 
